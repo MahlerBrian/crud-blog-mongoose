@@ -13,6 +13,10 @@ let authorSchema = mongoose.Schema({
   }
 });
 
+let commentSchema = mongoose.Schema({
+  content: String
+});
+
 //let vs const?  'type' vs no type?  String vs 'string'?
 let blogPostSchema = mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'Author' },
@@ -39,9 +43,7 @@ blogPostSchema.methods.serialize = function() {
 };
 
 
-let commentSchema = mongoose.Schema({
-  content: String
-});
+
 
 
 //why is Author variable and BlogPost constant?
