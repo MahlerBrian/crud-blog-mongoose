@@ -26,6 +26,17 @@ let blogPostSchema = mongoose.Schema({
   comments: [commentSchema]
 });
 
+authorSchema.virtual('authorName').get(function() {
+  return `${this.author.firstName} ${this.author.lastName}`.trim();
+});
+
+authorSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    author: this.authorName,
+    userName: this.userName
+  };
+};
 
 blogPostSchema.virtual('authorName').get(function() {
   return `${this.author.firstName} ${this.author.lastName}`.trim();

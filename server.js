@@ -17,12 +17,11 @@ app.get('/authors', (req, res) => {
   Author
     .find()
     .then(authors => {
-      return {
-        id: author._id,
-        name: `${author.firstName} ${author.lastName}`,
-        userName: author.userName
-      };
-    })
+      res.json({
+        authors: authors.map(
+          (author) => author.serialize())
+        });
+      })
     .catch(err => {
       console.error(err);
       res.status(500).json(err);
