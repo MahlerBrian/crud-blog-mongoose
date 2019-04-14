@@ -3,14 +3,23 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const blogPostSchema = mongoose.Schema({
-  author: {
-    firstName: String,
-    lastName: String
-  },
+
+let authorSchema = mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  userName: {
+    type: String,
+    unique: true
+  }
+});
+
+//let vs const?  'type' vs no type?  String vs 'string'?
+let blogPostSchema = mongoose.Schema({
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'Author' },
   title: {type: String, required: true},
   content: {type: String},
-  created: {type: Date, default: Date.now}
+  created: {type: Date, default: Date.now},
+  comments: [commentSchema]
 });
 
 
@@ -24,10 +33,23 @@ blogPostSchema.methods.serialize = function() {
     author: this.authorName,
     content: this.content,
     title: this.title,
-    created: this.created
+    created: this.created,
+    comments: this.comments
   };
 };
 
+
+let commentSchema = mongoose.Schema({
+  content: String
+});
+
+
+//why is Author variable and BlogPost constant?
+let Author = mongoose.model('Author', authorSchema);
 const BlogPost = mongoose.model('Blog', blogPostSchema);
 
-module.exports = {BlogPost};
+
+
+
+
+module.exports = {Author, BlogPost};
